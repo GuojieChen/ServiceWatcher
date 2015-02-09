@@ -16,7 +16,7 @@ namespace ServiceWatcher {
             while (true) {
 
                 foreach (string service in services) {
-                    Console.WriteLine(DateTime.Now +" Checking status of: {0}",service);
+                    Console.WriteLine(DateTime.Now + " Checking status of: {0}", service);
                     ServiceController sc = new ServiceController(service);
                     Console.WriteLine(DateTime.Now + " Status of service {0} is: {1}", service, sc.Status);
                     if (sc.Status != ServiceControllerStatus.Running) {
@@ -33,7 +33,8 @@ namespace ServiceWatcher {
                     sc = null;
                 }
                 Console.WriteLine(DateTime.Now + " All done. Waiting for {0} sec", Properties.Settings.Default.Delay / 1000);
-                System.Threading.Thread.Sleep(ServiceWatcher.Properties.Settings.Default.Delay); 
+                System.Threading.Thread.Sleep(ServiceWatcher.Properties.Settings.Default.Delay);
+            }
         }
     }
 }
