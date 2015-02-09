@@ -17,20 +17,56 @@ namespace ServiceWatcher {
 
                 foreach (string service in services) {
                     try {
+                        ServiceController sc = new ServiceController(service);
 
                         Console.WriteLine(DateTime.Now + " Checking status of: {0}", service);
-                        ServiceController sc = new ServiceController(service);
                         Console.WriteLine(DateTime.Now + " Status of service {0} is: {1}", service, sc.Status);
-                        if (sc.Status != ServiceControllerStatus.Running) {
+
+                        switch (sc.Status) {
+
+                            case ServiceControllerStatus.Running:
+                            Console.WriteLine(DateTime.Now + " Service {0} is running properly", service);
+                            break;
+                            
+                            case ServiceControllerStatus.Stopped:
                             Console.WriteLine(DateTime.Now + " Start service {0}", sc.DisplayName);
                             sc.Start();
                             sc.WaitForStatus(ServiceControllerStatus.Running);
-                            if (sc.Status != ServiceControllerStatus.Running && sc.Status != ServiceControllerStatus.StartPending) {
-                                Console.WriteLine(DateTime.Now + " Service {0} not started properly - retry", sc.DisplayName);
-                                sc.Start();
-                            }
+                            break;
 
+                            case ServiceControllerStatus.Paused:
+                            Console.WriteLine(DateTime.Now + " Start service {0}", sc.DisplayName);
+                            sc.Start();
+                            sc.WaitForStatus(ServiceControllerStatus.Running);
+                            break;
+
+                            case ServiceControllerStatus.PausePending:
+                            Console.WriteLine(DateTime.Now + " Service {0} is pausing. Wait.", sc.DisplayName);
+                            sc.WaitForStatus(ServiceControllerStatus.Paused);
+                            Console.WriteLine(DateTime.Now + " Start service {0}", sc.DisplayName);
+                            sc.Start();
+                            sc.WaitForStatus(ServiceControllerStatus.Running);
+                            break;
+
+                            case ServiceControllerStatus.StopPending:
+                            Console.WriteLine(DateTime.Now + " Service {0} is stopping. Wait.", sc.DisplayName);
+                            sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                            Console.WriteLine(DateTime.Now + " Start service {0}", sc.DisplayName);
+                            sc.Start();
+                            sc.WaitForStatus(ServiceControllerStatus.Running);
+                            break;
+
+                            case ServiceControllerStatus.StartPending:
+                            Console.WriteLine(DateTime.Now + " Service {0} start pending. Wait.", sc.DisplayName);
+                            sc.WaitForStatus(ServiceControllerStatus.Running);
+                            break;
+                            
+                            default:
+                            Console.WriteLine(DateTime.Now + " Service {0} is running properly", service);
+                            break;
+                                
                         }
+
                         sc.Dispose();
                         sc = null;
 
@@ -41,7 +77,7 @@ namespace ServiceWatcher {
 
                 }
                 Console.WriteLine(DateTime.Now + " All done. Waiting for {0} sec", Properties.Settings.Default.Delay / 1000);
-                System.Threading.Thread.Sleep(ServiceWatcher.Properties.Settings.Default.Delay);
+                System.Threading.Thread.Sleep(Properties.Settings.Default.Delay);
             }
         }
     }
