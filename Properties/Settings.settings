@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Services" Type="System.String" Scope="User">
-      <Value Profile="(Default)">BARAAGNT;vspherewebclientsvc</Value>
+      <Value Profile="(Default)">test12312321321321;BARAAGNT;vspherewebclientsvc;sdafsdafadfsdafsdaff</Value>
     </Setting>
     <Setting Name="Delay" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">300000</Value>

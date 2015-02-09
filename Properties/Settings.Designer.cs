@@ -25,7 +25,7 @@ namespace ServiceWatcher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("BARAAGNT;vspherewebclientsvc")]
+        [global::System.Configuration.DefaultSettingValueAttribute("test12312321321321;BARAAGNT;vspherewebclientsvc;sdafsdafadfsdafsdaff")]
         public string Services {
             get {
                 return ((string)(this["Services"]));

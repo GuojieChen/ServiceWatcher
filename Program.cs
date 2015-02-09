@@ -36,7 +36,7 @@ namespace ServiceWatcher {
 
                     } catch (Exception e) {
 
-                        Console.WriteLine("Error: {0}", e.StackTrace);
+                        Console.WriteLine("Error: {0}\n{1}", e.StackTrace,e.Message);
                     }
 
                 }
